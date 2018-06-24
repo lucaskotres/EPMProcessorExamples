@@ -7,6 +7,7 @@ import datetime
 import pandas as pd
 from pandas.tseries.offsets import *
 
+
 #pandas is the most powerfull Python library to work with tables
 
 @epr.applicationMethod('MondaysDescribe')
@@ -40,7 +41,8 @@ def mondays_describe(session, epmdataobject, starttime, endtime):
 
 @epr.applicationMethod('DaytimeWorkConsumption')
 def daytime_work_comsumption(session, epmdataobject, starttime, endtime):
-    '''calculates the energy consumption in working day from Monday to Friday'''
+    '''calculates the energy consumption in business time'''
+
     try:
         queryperiod = epm.QueryPeriod(starttime, endtime)
         processInterval = datetime.timedelta(seconds=300)
@@ -56,11 +58,18 @@ def daytime_work_comsumption(session, epmdataobject, starttime, endtime):
          'Timestamp': data['Timestamp'].tolist()}
     )
 
+    # set Timestamp as index in dataframe
+    df.set_index('Timestamp', inplace=True)
 
-    newdf = df.asfreq(BDay())
-    bdh = newdf.between_time('08:00', '18:00')
+    # filter work hours
+    df = df.between_time('08:00', '18:00')
 
-    print(bdh)
+    # filter business days
+    df = df.asfreq(BDay())
+
+    total = df['Value'].sum()
+
+    print(total)
 
     return epr.ScopeResult(True)
 

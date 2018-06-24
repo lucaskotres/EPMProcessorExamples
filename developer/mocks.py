@@ -31,7 +31,9 @@ lower_limit = 500
 
 df2 = get_pandas_data()
 
-df2 = df2.loc[df['A'] < lower_limit]
+df2 = df2.loc[df2['A'] > lower_limit]
+
+df2['newColumn'] = df2['Timestamp'].dt.total_seconds()
 print(df2)
 
 

@@ -73,9 +73,9 @@ def daytime_work_comsumption(session, epmdataobject, starttime, endtime):
 
     return epr.ScopeResult(True)
 
-@epr.applicationMethod('TimeBelow')
-def timebelow(session, epmdataobject, lowerlimit, starttime, endtime):
-    '''calculates the total time that the variable was below a limit value'''
+@epr.applicationMethod('FilterLowerLimit')
+def filter_lower_limit(session, epmdataobject, limit, starttime, endtime):
+    '''filter by a limit'''
     try:
         queryperiod = epm.QueryPeriod(starttime, endtime)
         processInterval = datetime.timedelta(seconds=300)
@@ -93,9 +93,5 @@ def timebelow(session, epmdataobject, lowerlimit, starttime, endtime):
 
     df = df.reset_index()
 
-    below_lower_line = df.Data < lowerlimit
-    upper_line_crossed = above_upper_line != above_upper_line.shift()
-    clusters = upper_line_crossed.cumsum()
-    below_lower_line = df.Data < lower_limit
-
-    times = df[below_lower_line].groupby(clusters)["DateTime"].first().tolist()
+    df = df.loc[df['A'] > limit]
+    print(df)

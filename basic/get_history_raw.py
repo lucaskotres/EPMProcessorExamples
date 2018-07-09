@@ -15,6 +15,6 @@ def get_history_raw(epmdataobject):
 
     queryperiod = epm.QueryPeriod(initime, endtime)
 
-    data = epmtag.historyReadRaw(queryperiod)
+    data = epmdataobject.historyReadRaw(queryperiod)
 
     print("Initial Time:{} \nEnd Time:{} \nData:{}".format(initime,endtime,data))

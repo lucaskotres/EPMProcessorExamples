@@ -15,6 +15,7 @@ def mondays_describe(session, epmdataobject, starttime, endtime):
     '''Shows the statistical describe of every Monday in period'''
 
 
+
     try:
         queryperiod = epm.QueryPeriod(starttime, endtime)
         processInterval = datetime.timedelta(seconds=300)

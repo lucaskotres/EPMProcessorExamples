@@ -1,5 +1,6 @@
 import epmprocessor as epr
 import epmwebapi as epm
+from collections import OrderedDict
 
 
 @epr.applicationMethod('GetPortalResource')
@@ -22,8 +23,6 @@ def get_processor_resource(session, filename, connection):
 
     print(session.connections)
 
-    epResourceManager = epmConn.getProcessorResourcesManager()
-    resource = epResourceManager.getResource(fileModel)
 
 
 def getFirstItemFromODict(oDict):

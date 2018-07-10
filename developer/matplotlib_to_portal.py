@@ -1,4 +1,3 @@
-
 ***REMOVED***
 ***REMOVED***
 
@@ -15,7 +14,7 @@ import matplotlib.pyplot as plt
 #pandas is the most powerfull Python library to work with tables
 
 @epr.applicationMethod('ScatterPlot')
-def scatter_plot(session, epmdataobject_1, epmdataobject_2, starttime, endtime, pathname, filename):
+def scatter_plot(session, connection, epmdataobject_1, epmdataobject_2, starttime, endtime, pathname):
     """
     **ScatterPlot**
 
@@ -23,6 +22,7 @@ def scatter_plot(session, epmdataobject_1, epmdataobject_2, starttime, endtime, 
                 gráfico do tipo Scatter, salvo nos resources do Portal.
 
                             :param session: objeto *session* do EPM Processor
+                            :parm connection: connection para os Resources
                             :param epmdataobject_1: dataobject.
                             :param epmdataobject_2: dataobject.
                             :param starttime: datetime de início da consulta.
@@ -40,7 +40,7 @@ def scatter_plot(session, epmdataobject_1, epmdataobject_2, starttime, endtime, 
 
                                 No modo de *TEST* o resultado é apenas impresso na tela.
 
-                                Não é feita distinção entre execuções de : *PRODUCTION* e *SIMULATION*, ou seja
+                                Não é feita distinção entre execuções de : *TEST*, *PRODUCTION* e *SIMULATION*, ou seja
                                 o resultado sempre será escrita em em arquivo em caso de sucesso na execução.
 
 
@@ -57,12 +57,11 @@ def scatter_plot(session, epmdataobject_1, epmdataobject_2, starttime, endtime, 
         raise Exception('Error in read aggregation')
 
     #gera o chart e salva em buffer
-    plt.scatter(data1, data2)
+    plt.scatter(data1['Value'], data2['Value'])
+    plt.title('Scatter Plot')
     bufBoxplot = io.BytesIO()
     plt.savefig(bufBoxplot, format='png')
     bufBoxplot.seek(0)
-
-
 
 
     print(session.connections)
@@ -70,7 +69,7 @@ def scatter_plot(session, epmdataobject_1, epmdataobject_2, starttime, endtime, 
     epResourceManager = epmConn.getPortalResourcesManager()
     imgFolder = epResourceManager.getResource(pathname)
 
-    resource = epResourceManager.upload(str(filename+'.png'), bufBoxplot, 'Scatter plot gerada pelo Processor',mimetypes.types_map['.png'], overrideFile=True)
+    resource = imgFolder.upload('scatter.png', bufBoxplot, 'Scatterplot gerado pelo Processor',mimetypes.types_map['.png'], overrideFile=True)
 
 
 def getFirstItemFromODict(oDict):

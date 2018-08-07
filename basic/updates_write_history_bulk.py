@@ -1,7 +1,5 @@
-#EPM Processor modules
-***REMOVED***
-***REMOVED***
 
+***REMOVED***
 ***REMOVED***
 import numpy as np
 ***REMOVED***
@@ -9,7 +7,7 @@ import numpy as np
 
 @epr.applicationMethod('HistoryUpdate')
 def history_update(session, epmdataobject):
-    '''Update tag with 5 new values'''
+    '''Update epmdataobject with five itens'''
 
     #pandas generate a range of dates
     newdates = pd.date_range('1/1/2018', periods=5,freq='H' )
@@ -17,7 +15,7 @@ def history_update(session, epmdataobject):
     #just a five itens list
     newvalues = [50,60,30,40,10]
 
-    # epm data format
+    # epm ndarray data format.
     desc = np.dtype([('Value', '>f8'), ('Timestamp', 'object'), ('Quality', '>i4')])
     datatemp = np.empty(len(newvalues), dtype=desc)
 
@@ -29,6 +27,7 @@ def history_update(session, epmdataobject):
         datatemp['Quality'][i] = 0
         i = i+1
     try:
+
         if session.scopeContext == epr.ScopeContext.Test:
             print('Resultado: {valor} - {timestamp}'.format(valor=str(datatemp['Value'][-1]),
                                                                 timestamp=datatemp['Timestamp'][-1].isoformat()))
@@ -37,3 +36,16 @@ def history_update(session, epmdataobject):
 
     except:
         raise Exception('Error in historyUpdate')
+
+
+@epr.applicationMethod('Write')
+def write(session, epmdataobject):
+    '''Write one value in epmdataobject'''
+
+    date = datetime.datetime.now()
+    value = 100
+    quality = 0 #zero is Good in OPC UA
+
+
+    epmdataobject.write(value, date, quality)
+

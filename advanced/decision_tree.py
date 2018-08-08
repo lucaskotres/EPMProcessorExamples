@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-
+import requests
 import mimetypes
 import io
 from collections import OrderedDict
@@ -15,6 +15,9 @@ from sklearn.tree import DecisionTreeRegressor
 @epr.applicationMethod('PredictVariable')
 def predict_variable(session, epmdataobject1, epmdataobject2, starttime, endtime, connection, pathname):
 
+
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=London&APPID={1c8911a86601fec454d7f103939e5191}')
+    print(r.json())
 
     try:
 
@@ -76,6 +79,8 @@ def predict_variable(session, epmdataobject1, epmdataobject2, starttime, endtime
     resource = imgFolder.upload('predict_Decision_tree_regression.png', buf, 'Scatterplot gerado pelo Processor',
                                 mimetypes.types_map['.png'],
                                 overrideFile=True)
+
+
 
 
 def getFirstItemFromODict(oDict):

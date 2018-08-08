@@ -1,3 +1,4 @@
+'''
 import epmprocessor as epr
 import epmwebapi as epm
 import numpy as np
@@ -69,3 +70,54 @@ def predict_variable(epmdataobject1,epmdataobject2, starttime, endtime, connecti
     imgFolder = epResourceManager.getResource(pathname)
 
     resource = imgFolder.upload('scatter.png', bufBoxplot, 'Scatterplot gerado pelo Processor',mimetypes.types_map['.png'], overrideFile=True)
+
+'''
+#################################
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+import pandas as pd
+
+dataset = pd.read_csv('c:\epmprocessorexamples\wind_data.csv',delimiter=';')
+
+
+y = dataset.iloc[:,0:1].values
+
+X = dataset.iloc[:, 1:2].values
+
+X_test = np.array([0,3,6, 9,12,15,18])
+X_test = X_test.reshape(-1,1)
+
+import datetime
+
+from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeRegressor
+
+
+# Fit regression model
+regr_1 = DecisionTreeRegressor(max_depth=2)
+regr_2 = DecisionTreeRegressor(max_depth=5)
+regr_1.fit(X, y)
+regr_2.fit(X, y)
+
+# Predict
+
+y_1 = regr_1.predict(X_test)
+print(y_1)
+print(X_test)
+y_2 = regr_2.predict(X_test)
+
+print(y_2)
+print(X_test)
+
+# Plot the results
+plt.figure()
+plt.scatter(X, y, color='red', label="data")
+plt.plot(X_test, regr_1.predict(X_test), color="blue", label="max_depth=2", linewidth=2)
+plt.plot(X_test, regr_2.predict(X_test), color="yellow", label="max_depth=5", linewidth=2)
+plt.xlabel("data")
+plt.ylabel("target")
+plt.title("Decision Tree Regression")
+plt.legend()
+plt.show()

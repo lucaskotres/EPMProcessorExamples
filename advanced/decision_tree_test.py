@@ -14,7 +14,7 @@ def getFirstItemFromODict(oDict):
     return next(iter(oDict.values())) if isinstance(oDict, OrderedDict) or isinstance(oDict, dict) else None
 
 try:
-    connection = epm.EpmConnection('http://dili:44333', 'http://dili:44332', 'sa', 'Epm2017')
+    connection = epm.EpmConnection('http://dili:44333', 'http://dili:44332', 'sa', '...')
 
 except Exception:
     logger.error("can't connect to epm server")

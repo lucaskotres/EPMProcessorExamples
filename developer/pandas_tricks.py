@@ -96,3 +96,27 @@ def filter_lower_limit(session, epmdataobject, limit, starttime, endtime):
 
     df = df.loc[df['A'] > limit]
     print(df)
+
+@epr.applicationMethod("WeeklyReport")
+def weekly_report(session, temperature, windspeed, pathname):
+    """
+    Write weekly statistics in EPM Server
+    """
+    starttime = session.timeEvent
+    endtime = starttime - datetime.timedelta(weeks=1)
+
+    try:
+        queryperiod = epm.QueryPeriod(starttime, endtime)
+        processInterval = datetime.timedelta(minutes=15)
+        aggregationdetails = epm.AggregateDetails(processInterval, epm.AggregateType.Interpolative)
+        temperature_data = temperature.historyReadAggregate(aggregationdetails, queryperiod)
+        windspeed_data = windspeed.historyReadAggregate(aggregationdetails, queryperiod)
+
+    
+    except:
+        raise Exception('get interpolative data error')
+        
+    
+
+
+

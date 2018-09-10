@@ -1,6 +1,6 @@
 
-***REMOVED***
-***REMOVED***
+import epmprocessor as epr
+import epmwebapi as epm
 
 import scipy
 #examples with linear algebra and integrate

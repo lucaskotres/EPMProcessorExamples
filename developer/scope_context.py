@@ -1,8 +1,8 @@
 
 #we can program different actions depending on the execution context: test, simulation or production
 
-***REMOVED***
-***REMOVED***
+import epmprocessor as epr
+import epmwebapi as epm
 
 @epr.applicationMethod('ScopeContext')
 def scope_context(session):
